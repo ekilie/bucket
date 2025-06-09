@@ -2,7 +2,7 @@
 // include_once '../config.php';
 
 class Api {
-    public static string $uploadDir = "../../../bucket/";
+    public static string $uploadDir = "../bucket/";
 
     public static function Header(string $config) {
         header($config);
@@ -96,23 +96,6 @@ class Api {
             throw new Exception('Invalid file source');
         }
     }
-    
-
-    // public function getUserByApiKey($apiKey) {
-    //     $stmt = $conn->prepare("SELECT user FROM data WHERE api_key = ?");
-    //     $stmt->bind_param("s", $apiKey);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-    //     return $result->fetch_assoc();
-    // }
-
-    // public function getUserDetails($userId) {
-    //     $stmt = $conn->prepare("SELECT name, email FROM users WHERE unique_id = ?");
-    //     $stmt->bind_param("i", $userId);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-    //     return $result->fetch_assoc();
-    // }
 }
 
 class Database {
