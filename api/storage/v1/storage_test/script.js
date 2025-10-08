@@ -10,7 +10,7 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
   if (!apiKey) {
     messageDiv.innerHTML = `<div class="mt-4 p-4 bg-red-50 border border-red-400 text-red-800 rounded">
         <p class="font-semibold">Missing API Key</p>
-        <p>Please enter your API key. Visit <a href="https://relay.ekilie.com/console" target="_blank" class="underline font-medium">Ekilirelay Console</a> to get one if you don't have one.</p>
+        <p>Please enter your API key. Visit <a href="https://bucket.ekilie.com/console" target="_blank" class="underline font-medium">Ekilirelay Console</a> to get one if you don't have one.</p>
       </div>`;
     return;
   }
@@ -33,7 +33,7 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       <span class="text-green-600">Uploading...</span>
     </div>`;
   try {
-    const response = await fetch('https://relay.ekilie.com/api/storage/v1/index.php', {
+    const response = await fetch('https://bucket.ekilie.com/api/storage/v1/index.php', {
       method: 'POST',
       body: formData
     });

@@ -1,5 +1,5 @@
 <?php
-include_once '../config.php';
+include_once '../../config.php';
 include_once "api.php";
 
 # Allowing cross-origin requests (CORS)
