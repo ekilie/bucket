@@ -1,6 +1,10 @@
 <?php
 include_once '../../../config.php';
 include_once "../../api.php";
+require '../../../parseEnv.php';
+parseEnv(__DIR__ . '/.env');
+
+$baseApiKey = getenv('BASE_API_KEY');
 
 Api::Header("Access-Control-Allow-Origin: *");
 Api::Header("Access-Control-Allow-Methods: POST");
@@ -11,16 +15,50 @@ Api::Header("X-Frame-Options: DENY");
 
 $uploadDir = API::storageUploadDir();
 $maxFileSize = 100 * 1024 * 1024;
-$allowedExtensions = ['jpg','jpeg','png','gif','webp','svg','pdf','txt',
-                    'doc','docx','xls','xlsx','ppt','pptx','zip','rar',
-                    'tar','gz','json','xml'];
-$allowedTypes = ['image/jpeg','image/png','image/gif','image/webp',
-                'image/svg+xml','application/pdf','text/plain',
-                'application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'application/vnd.ms-powerpoint','application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                'application/zip','application/x-rar-compressed','application/x-tar',
-                'application/gzip','application/json','application/xml','text/xml'];
+$allowedExtensions = [
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+    'svg',
+    'pdf',
+    'txt',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'ppt',
+    'pptx',
+    'zip',
+    'rar',
+    'tar',
+    'gz',
+    'json',
+    'xml'
+];
+$allowedTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/svg+xml',
+    'application/pdf',
+    'text/plain',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/zip',
+    'application/x-rar-compressed',
+    'application/x-tar',
+    'application/gzip',
+    'application/json',
+    'application/xml',
+    'text/xml'
+];
 
 if (Method::POST()) {
     try {
@@ -52,11 +90,11 @@ if (Method::POST()) {
         // File metadata
         $originalName = basename($file['name']);
         $fileNameWithoutExt = pathinfo($originalName, PATHINFO_FILENAME);
-        $fileSize = (int)$file['size'];
+        $fileSize = (int) $file['size'];
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->file($file['tmp_name']);
         $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-        $safeFilename = $fileNameWithoutExt."_".bin2hex(random_bytes(16)) . '.' . $extension;
+        $safeFilename = $fileNameWithoutExt . "_" . bin2hex(random_bytes(16)) . '.' . $extension;
         $userDir = $uploadDir . $user_email . '/';
         $targetPath = $userDir . $safeFilename;
         $publicUrl = "https://relay.ekilie.com/bucket/{$user_email}/" . rawurlencode($safeFilename);
@@ -79,7 +117,8 @@ if (Method::POST()) {
                               (user_id, original_name, stored_name, file_type, 
                                file_size, extension, upload_time, url)
                               VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-        $stmt->bind_param("isssiss", 
+        $stmt->bind_param(
+            "isssiss",
             $user['unique_id'],
             $originalName,
             $safeFilename,
@@ -88,13 +127,13 @@ if (Method::POST()) {
             $extension,
             $publicUrl
         );
-        
+
         if (!$stmt->execute()) {
             throw new Exception("Failed to save file metadata");
         }
 
         $conn->commit();
-        
+
         Api::Response([
             'status' => 'success',
             'url' => $publicUrl,
@@ -122,5 +161,3 @@ if (Method::POST()) {
         'message' => 'Method not allowed'
     ]);
 }
-
-
