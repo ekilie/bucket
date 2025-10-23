@@ -2,7 +2,7 @@
 include_once '../../../config.php';
 include_once "../../api.php";
 require '../../../parseEnv.php';
-parseEnv(__DIR__ . '/.env');
+parseEnv(__DIR__ . '/../../../.env');
 
 $baseApiKey = getenv('BASE_API_KEY');
 
