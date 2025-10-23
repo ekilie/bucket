@@ -1,8 +1,26 @@
 <?php
-// Improved index page for Ekilie Bucket with animations
+// Further improved index page for the Bucket with random quotes and enhanced animations
 // Utilitarian design: Simple, functional, no-frills interface
 // Retro-modern aesthetic: Monospace fonts, subtle gradients, basic layout reminiscent of early web, but with modern CSS for responsiveness and animations
-// Animations: Subtle retro-inspired effects like typewriter text, fading elements, and a simple bucket "fill" animation using CSS
+// Changes: Removed specific "ekilie" mentions for generality; Added random inspirational quote on each load
+// Enhanced: Smoother animations, added subtle particle background for a "digital dust" retro effect, improved bucket visualization
+
+// Array of random quotes (inspirational/tech-themed for a file storage vibe)
+$quotes = [
+    "Data is the new oil. - Clive Humby",
+    "The web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past. - Tim Berners-Lee",
+    "Store your files wisely; retrieve them swiftly.",
+    "In the bucket of knowledge, every drop counts.",
+    "Files come and go, but storage endures.",
+    "Innovation distinguishes between a leader and a follower. - Steve Jobs",
+    "The advance of technology is based on making it fit in so that you don't really even notice it. - Bill Gates",
+    "Keep your data close, and your backups closer.",
+    "Every file tells a story.",
+    "Simplicity is the ultimate sophistication. - Leonardo da Vinci"
+];
+
+// Select a random quote
+$randomQuote = $quotes[array_rand($quotes)];
 ?>
 
 <!DOCTYPE html>
@@ -11,9 +29,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ekilie Bucket - Internal File Storage</title>
+    <title>Bucket - Internal File Storage</title>
     <style>
-    /* Retro-modern styling */
+    /* Retro-modern styling with enhancements */
     body {
         font-family: 'Courier New', Courier, monospace;
         /* Classic typewriter font for retro feel */
@@ -29,6 +47,38 @@
         text-align: center;
         overflow: hidden;
         /* Prevent scroll on animations */
+        position: relative;
+        /* For particles */
+    }
+
+    /* Subtle particle background for digital retro effect */
+    .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        animation: float 10s infinite linear;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+            opacity: 0.5;
+        }
+
+        100% {
+            transform: translateY(-100vh);
+            opacity: 0;
+        }
     }
 
     .container {
@@ -43,6 +93,8 @@
         max-width: 600px;
         width: 90%;
         position: relative;
+        z-index: 1;
+        /* Above particles */
         animation: fadeIn 1s ease-in-out;
         /* Fade in container */
     }
@@ -60,12 +112,20 @@
             blinkCursor 0.75s steps(1) infinite normal;
     }
 
-    p {
+    .quote {
         font-size: 1.2em;
+        font-style: italic;
         margin-bottom: 30px;
         opacity: 0;
         animation: fadeIn 1s ease-in-out 3s forwards;
         /* Fade in after typewriter */
+    }
+
+    p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: fadeIn 1s ease-in-out 4s forwards;
     }
 
     .status {
@@ -74,34 +134,31 @@
         /* Green for success, like old terminals */
     }
 
-    /* Bucket animation - simple retro ASCII-like bucket filling */
+    /* Enhanced bucket animation - more detailed retro ASCII-like bucket with glow effect */
     .bucket {
         font-size: 1.5em;
         margin: 20px auto;
         width: 200px;
         height: 150px;
         position: relative;
+        border: 2px solid #999;
+        border-radius: 0 0 10px 10px;
+        /* Curved bottom */
         opacity: 0;
-        animation: fadeIn 1s ease-in-out 4s forwards;
-        /* Appear after text */
+        animation: fadeIn 1s ease-in-out 5s forwards, glow 2s infinite alternate 6s;
+        /* Appear and glow */
     }
 
     .bucket::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background:
-            linear-gradient(to bottom, transparent 0%, #ccc 0%, #ccc 20%, transparent 20%),
-            /* Top rim */
-            linear-gradient(to bottom, transparent 80%, #ccc 80%, #ccc 100%, transparent 100%);
-        /* Bottom rim */
-        border-left: 2px solid #999;
-        border-right: 2px solid #999;
-        animation: fillBucket 2s ease-in-out 5s forwards;
-        /* Fill animation */
+        top: -10px;
+        left: 20%;
+        width: 60%;
+        height: 10px;
+        background: #999;
+        border-radius: 5px 5px 0 0;
+        /* Handle */
     }
 
     .bucket-content {
@@ -110,20 +167,21 @@
         left: 0;
         width: 100%;
         height: 0%;
-        background: #add8e6;
-        /* Light blue for "files" */
-        animation: fillContent 2s ease-in-out 5s forwards;
+        background: linear-gradient(to top, #add8e6, #87cefa);
+        /* Gradient blue for "files" */
+        animation: fillContent 3s ease-in-out 6s forwards;
         overflow: hidden;
     }
 
     .bucket-content::after {
-        content: 'FILES';
+        content: 'DATA';
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         color: #fff;
         font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     /* Keyframe animations */
@@ -159,28 +217,26 @@
         }
     }
 
-    @keyframes fillBucket {
-        0% {
-            background-position: 0 0, 0 100%;
-        }
-
-        100% {
-            background-position: 0 0, 0 20%;
-        }
-
-        /* "Fill" by moving bottom up */
-    }
-
     @keyframes fillContent {
         from {
             height: 0%;
         }
 
         to {
-            height: 60%;
+            height: 80%;
         }
 
-        /* Fill to 60% for visual effect */
+        /* Fill higher for better effect */
+    }
+
+    @keyframes glow {
+        from {
+            box-shadow: 0 0 5px rgba(0, 102, 0, 0.3);
+        }
+
+        to {
+            box-shadow: 0 0 15px rgba(0, 102, 0, 0.8);
+        }
     }
 
     /* Responsive adjustments */
@@ -193,6 +249,7 @@
             font-size: 1.5em;
         }
 
+        .quote,
         p {
             font-size: 1em;
         }
@@ -207,15 +264,26 @@
 </head>
 
 <body>
+    <div class="particles">
+        <?php
+        // Generate 20 random particles for background effect
+        for ($i = 0; $i < 20; $i++) {
+            $size = rand(2, 5);
+            $left = rand(0, 100);
+            $delay = rand(0, 10);
+            echo "<div class='particle' style='width: {$size}px; height: {$size}px; left: {$left}%; animation-delay: -{$delay}s; animation-duration: " . rand(8, 15) . "s;'></div>";
+        }
+        ?>
+    </div>
     <div class="container">
-        <h1>Welcome to Ekilie Bucket</h1>
-        <p>This is the internal file storage system for Ekilie. Intended for API use only, but here's a glimpse if
-            you're browsing.</p>
+        <h1>Welcome to the Bucket</h1>
+        <p class="quote"><?php echo $randomQuote; ?></p>
+        <!-- <p>This is an internal file storage system. Intended for API use only, but enjoy this view if you're here.</p> -->
         <div class="bucket">
             <div class="bucket-content"></div>
         </div>
-        <p class="status"><?php echo "Hello from Ekilie Bucket Here"; ?></p>
-        <!-- Add utilitarian features if needed, e.g., login link or file upload placeholder -->
+        <p class="status"><?php echo "Hello from the Bucket"; ?></p>
+        <!-- Add utilitarian features if needed, e.g., API docs link -->
         <!-- <a href="/api-docs" style="text-decoration: underline; color: #0000ff;">View API Documentation</a> -->
     </div>
 </body>
