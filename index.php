@@ -1,11 +1,4 @@
 <?php
-// Further improved index page for the Bucket with random quotes and enhanced animations
-// Utilitarian design: Simple, functional, no-frills interface
-// Retro-modern aesthetic: Monospace fonts, subtle gradients, basic layout reminiscent of early web, but with modern CSS for responsiveness and animations
-// Changes: Removed specific "ekilie" mentions for generality; Added random inspirational quote on each load
-// Enhanced: Smoother animations, added subtle particle background for a "digital dust" retro effect, improved bucket visualization
-
-// Array of random quotes (inspirational/tech-themed for a file storage vibe)
 $quotes = [
     "Data is the new oil. - Clive Humby",
     "The web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past. - Tim Berners-Lee",
@@ -19,7 +12,6 @@ $quotes = [
     "Simplicity is the ultimate sophistication. - Leonardo da Vinci"
 ];
 
-// Select a random quote
 $randomQuote = $quotes[array_rand($quotes)];
 ?>
 
