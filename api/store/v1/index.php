@@ -2,7 +2,7 @@
 include_once '../../../config.php';
 include_once "../../api.php";
 require '../../../parseEnv.php';
-parseEnv(__DIR__ . '/.env');
+parseEnv(__DIR__ . '/../../../.env');
 
 $baseApiKey = getenv('BASE_API_KEY');
 
@@ -68,22 +68,8 @@ if (Method::POST()) {
 
         $file = $_FILES['file'];
         $apiKey = $_POST['apikey'];
-        $conn->begin_transaction();
 
-        // Validates API key and get user
-        $stmt = $conn->prepare("SELECT u.unique_id, u.email 
-                              FROM data d 
-                              JOIN users u ON d.user = u.unique_id 
-                              WHERE d.api_key = ?");
-        $stmt->bind_param("s", $apiKey);
-        $stmt->execute();
-        $user = $stmt->get_result()->fetch_assoc();
-
-        # user info
-        $user_id = $user['unique_id'];
-        $user_email = $user['email'];
-
-        if (!$user) {
+        if ($apiKey !== $baseApiKey) {
             throw new Exception('Invalid API key');
         }
 
@@ -95,16 +81,15 @@ if (Method::POST()) {
         $mimeType = $finfo->file($file['tmp_name']);
         $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
         $safeFilename = $fileNameWithoutExt . "_" . bin2hex(random_bytes(16)) . '.' . $extension;
-        $userDir = $uploadDir . $user_email . '/';
-        $targetPath = $userDir . $safeFilename;
-        $publicUrl = "https://relay.ekilie.com/bucket/{$user_email}/" . rawurlencode($safeFilename);
+        $targetPath = $uploadDir . $safeFilename;
+        $publicUrl = "https://bucket.ekilie.com/bucket/" . rawurlencode($safeFilename);
 
         // Validates upload
         API::validateUpload($file, $maxFileSize, $allowedTypes, $allowedExtensions, $mimeType, $extension);
 
-        // Creates user directory
-        if (!is_dir($userDir) && !mkdir($userDir, 0755, true)) {
-            throw new Exception("Failed to create user directory");
+        // Creates upload directory if not exists
+        if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
+            throw new Exception("Failed to create upload directory");
         }
 
         // Moves uploaded file
@@ -112,27 +97,6 @@ if (Method::POST()) {
             throw new Exception("File storage failed");
         }
 
-        // Stores metadata
-        $stmt = $conn->prepare("INSERT INTO uploads 
-                              (user_id, original_name, stored_name, file_type, 
-                               file_size, extension, upload_time, url)
-                              VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-        $stmt->bind_param(
-            "isssiss",
-            $user['unique_id'],
-            $originalName,
-            $safeFilename,
-            $mimeType,
-            $fileSize,
-            $extension,
-            $publicUrl
-        );
-
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to save file metadata");
-        }
-
-        $conn->commit();
 
         Api::Response([
             'status' => 'success',
@@ -146,7 +110,6 @@ if (Method::POST()) {
         ]);
 
     } catch (Exception $e) {
-        $conn->rollback();
         error_log("Upload Error: {$e->getMessage()} - IP: {$_SERVER['REMOTE_ADDR']}");
         http_response_code(400);
         Api::Response([

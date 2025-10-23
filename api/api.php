@@ -2,7 +2,7 @@
 // include_once '../config.php';
 
 class Api {
-    public static string $uploadDir = "../bucket/";
+    public static string $uploadDir = "../../../bucket/"; //FIXME: Adjusted path for correct file storage location
 
     public static function Header(string $config) {
         header($config);
