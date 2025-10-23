@@ -82,7 +82,7 @@ if (Method::POST()) {
         $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
         $safeFilename = $fileNameWithoutExt . "_" . bin2hex(random_bytes(16)) . '.' . $extension;
         $targetPath = $uploadDir . $safeFilename;
-        $publicUrl = "https://relay.ekilie.com/bucket/" . rawurlencode($safeFilename);
+        $publicUrl = "https://bucket.ekilie.com/bucket/" . rawurlencode($safeFilename);
 
         // Validates upload
         API::validateUpload($file, $maxFileSize, $allowedTypes, $allowedExtensions, $mimeType, $extension);
