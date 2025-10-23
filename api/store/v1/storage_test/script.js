@@ -33,7 +33,7 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       <span class="text-green-600">Uploading...</span>
     </div>`;
   try {
-    const response = await fetch('https://bucket.ekilie.com/api/storage/v1/index.php', {
+    const response = await fetch('https://bucket.ekilie.com/api/store/v1/index.php', {
       method: 'POST',
       body: formData
     });
