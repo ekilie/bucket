@@ -49,6 +49,12 @@ $allowedExtensions = [
     'oga',
     'flac',
     'opus',
+    'webm',
+    // Video
+    'mp4',
+    'mov',
+    'avi',
+    'mkv',
     'webm'
 ];
 
@@ -88,7 +94,13 @@ $allowedTypes = [
     'audio/oga',
     'audio/flac',        // .flac
     'audio/webm',        // .webm
-    'audio/opus'         // .opus
+    'audio/opus',        // .opus
+    // Video
+    'video/mp4',         // .mp4
+    'video/quicktime',   // .mov
+    'video/x-msvideo',   // .avi
+    'video/x-matroska',  // .mkv
+    'video/webm'         // .webm
 ];
 
 if (Method::POST()) {
