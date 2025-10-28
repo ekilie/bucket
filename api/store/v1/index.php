@@ -1,7 +1,7 @@
 <?php
-include_once '../../../config.php';
-include_once "../../api.php";
-require '../../../parseEnv.php';
+include_once __DIR__ . '/../../../config.php';
+include_once __DIR__ . '/../../api.php';
+require __DIR__ . '/../../../parseEnv.php';
 parseEnv(__DIR__ . '/../../../.env');
 
 $baseApiKey = getenv('BASE_API_KEY');
