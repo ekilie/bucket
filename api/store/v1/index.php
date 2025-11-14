@@ -71,7 +71,7 @@ $allowedExtensions = [
     'vtt',
     'srt',
     'ass',
-    'ssa'
+    'ssa',
 ];
 
 $allowedTypes = [
@@ -132,7 +132,9 @@ $allowedTypes = [
     'text/vtt',                         // .webvtt, .vtt (subtitles)
     'application/x-subrip',             // .srt (subtitles)
     'text/x-ass',                       // .ass (subtitles)
-    'text/x-ssa'                        // .ssa (subtitles)
+    'text/x-ssa',                       // .ssa (subtitles)
+    // Binary/Generic
+    'application/octet-stream'          // Generic binary data
 ];
 
 if (Method::POST()) {
