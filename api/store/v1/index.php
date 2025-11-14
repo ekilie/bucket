@@ -40,6 +40,13 @@ $allowedExtensions = [
     // Data
     'json',
     'xml',
+    'csv',
+    'yaml',
+    'yml',
+    'toml',
+    'bson',
+    'avro',
+    'parquet',
     // Audio
     'mp3',
     'wav',
@@ -55,7 +62,16 @@ $allowedExtensions = [
     'mov',
     'avi',
     'mkv',
-    'webm'
+    'webm',
+    // Streaming Media
+    'm3u8',
+    'ts',
+    'mpd',
+    'webvtt',
+    'vtt',
+    'srt',
+    'ass',
+    'ssa'
 ];
 
 $allowedTypes = [
@@ -83,6 +99,13 @@ $allowedTypes = [
     'application/json',
     'application/xml',
     'text/xml',
+    'text/csv',
+    'application/x-yaml',
+    'text/yaml',
+    'application/toml',
+    'application/bson',
+    'application/avro',
+    'application/parquet',
     // Audio
     'audio/mpeg',        // .mp3
     'audio/x-wav',       // .wav
@@ -100,7 +123,16 @@ $allowedTypes = [
     'video/quicktime',   // .mov
     'video/x-msvideo',   // .avi
     'video/x-matroska',  // .mkv
-    'video/webm'         // .webm
+    'video/webm',        // .webm
+    // Streaming Media
+    'application/vnd.apple.mpegurl',    // .m3u8 (HLS playlists)
+    'application/x-mpegurl',            // .m3u8 alternate
+    'video/mp2t',                       // .ts (transport stream)
+    'application/dash+xml',             // .mpd (DASH manifest)
+    'text/vtt',                         // .webvtt, .vtt (subtitles)
+    'application/x-subrip',             // .srt (subtitles)
+    'text/x-ass',                       // .ass (subtitles)
+    'text/x-ssa'                        // .ssa (subtitles)
 ];
 
 if (Method::POST()) {
